@@ -1,4 +1,4 @@
-# PCF8574 16x2 LCD  for STM32CubeMX projects
+# PCF8574 16x2 HD44780 LCD for STM32CubeMX projects
 
 This is a very simple way to use the PCF8574(A) port expander with the common LCD HD44780. The "library" was tested with a STM32F407 (STM32F4-Discovery) but should work flawless with any all i2c STM32 systems. The code is very simple and was not intended to be elegant or to cover all features. 
 
@@ -55,7 +55,8 @@ This code was tested with STM32CubeMX version 5.6.0 and STM32F4 MCU Package 1.25
       Libs/PCF8574/pcf8574.c \
       ...
       ```
-* Open up the ```Libs/PCF8574/pcf8574.h``` and modify the address and i2c handler so it fits your settings. In the case below I2C3 was used and A0,A1 and A2 are OPEN on the breakout board:
+* Open up the ```Libs/PCF8574/pcf8574.h``` and modify the address and i2c handler so it fits your settings. In the case below I2C3 was used and A0,A1 and A2 are OPEN on the breakout board. 
+* **The << 1 SHIFT to the left is needed because the R/W byte on the 8-Bit bus is bit[0]; so the 7-bit address must be shifted to the left. The STM32-HAL does not do the shift internally so you have to make it. This is the most common issue with I2C on the STM32Fx with the HAL.**
     * ```
       #define PCF8574_I2C_ADDRESS (0x3F << 1) 
       #define PCF8574_I2C_HANDLER hi2c3
